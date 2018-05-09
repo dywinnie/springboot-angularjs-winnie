@@ -2,7 +2,7 @@ var app = angular.module('app', ['ngRoute','ngResource','ngStorage']);
 app.config(function($routeProvider){
     $routeProvider
         .when('/users',{
-            templateUrl: '/views/users.html',
+            templateUrl: '/views/usersList.html',
             controller: 'UserController',
             controllerAs: 'ctrl',
             resolve: {
@@ -12,7 +12,7 @@ app.config(function($routeProvider){
             }
         })
         .when('/roles',{
-            templateUrl: '/views/roles.html',
+            templateUrl: '/views/rolesList.html',
             controller: 'RoleController',
             controllerAs:'ctrl',
             resolve: {
@@ -25,9 +25,6 @@ app.config(function($routeProvider){
             templateUrl: '/views/create_user.html',
             controller: 'UserController',
             controllerAs:'ctrl'
-        })
-        .when('/viewSummary',{
-            templateUrl: '../index2.html'
         })
         .otherwise(
             { redirectTo: '/'}

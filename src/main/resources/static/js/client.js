@@ -1,6 +1,3 @@
-/**
- * Created by stephan on 20.03.16.
- */
 
 $(function () {
     // VARIABLES =============================================================
@@ -11,6 +8,7 @@ $(function () {
     var $response = $("#response");
     var $login = $("#login");
     var $userInfo = $("#userInfo").hide();
+    var $pageBody = $("#pageBody").hide();
 
     // FUNCTIONS =============================================================
     function getJwtToken() {
@@ -26,6 +24,7 @@ $(function () {
     }
 
     function doLogin(loginData) {
+
         $.ajax({
             url: "/auth",
             type: "POST",
@@ -37,9 +36,10 @@ $(function () {
                 setJwtToken(data.token);
                 $login.hide();
                 $notLoggedIn.hide();
-                console.log("view summary");
                 // showTokenInformation();
                 // showUserInformation();
+                $userInfo.show();
+                $pageBody.show();
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 if (jqXHR.status === 401 || jqXHR.status === 403) {
@@ -53,6 +53,11 @@ $(function () {
                 }
             }
         });
+
+
+
+        console.log( 'This function will be called in 100ms' );
+
     }
 
     function doLogout() {
@@ -64,6 +69,8 @@ $(function () {
         $loggedIn.hide();
         $loggedInBody.empty();
         $notLoggedIn.show();
+        $("#createUserForm").hide();
+        $pageBody.hide();
     }
 
     function createAuthorizationTokenHeader() {
@@ -144,14 +151,10 @@ $(function () {
         };
 
         doLogin(formData);
+
     });
 
     $("#logoutButton").click(doLogout);
-
-    $("#registerBtn").click(function() {
-        location.reload();
-    });
-
 
     $("#exampleServiceBtn").click(function () {
         $.ajax({
@@ -194,6 +197,7 @@ $(function () {
     if (getJwtToken()) {
         $login.hide();
         $notLoggedIn.hide();
+        $userInfo.show();
         showTokenInformation();
         showUserInformation();
     }

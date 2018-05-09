@@ -5,17 +5,19 @@
     <title>Title</title>
 </head>
 <body ng-controller="UserController">
-<form ng-submit="ctrl.submit()" ng-show="!isSaved">
-    <div class="form-group col-xs-6">
-        <label>Name:</label>
-        <input class="form-control" ng-model="user.userName" id="name">
-        <div style="margin-top: 10pt;">
-            <button type="submit" class="btn btn-default">Register</button>
+<div id="createUserForm">
+    <form ng-submit="ctrl.submit()" ng-show="!isSaved">
+        <div class="form-group col-xs-6">
+            <label>Name:</label>
+            <input class="form-control" ng-model="user.userName" id="name">
+            <div style="margin-top: 10pt;">
+                <button type="submit" class="btn btn-default">Register</button>
+            </div>
         </div>
-    </div>
-</form>
+    </form>
 
-<div style="font-size: 20pt;" ng-show="isSaved">User Name "{{user.userName}}" has been created</div>
+    <div style="font-size: 20pt;" ng-show="isSaved">User Name "{{user.userName}}" has been created</div>
+</div>
 
 <script src="https://code.jquery.com/jquery-2.2.2.js" integrity="sha256-4/zUCqiq0kqxhZIyp4G0Gk+AOtCJsY1TA00k5ClsZYE="
         crossorigin="anonymous"></script>
