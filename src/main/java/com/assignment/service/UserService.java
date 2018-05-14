@@ -13,4 +13,8 @@ public interface UserService {
 
     void saveUser(UserModel user);
 
+    Boolean existsByUserName(String userName);
+
+    List<UserModel> listUserProfile(String userName);
+
 }

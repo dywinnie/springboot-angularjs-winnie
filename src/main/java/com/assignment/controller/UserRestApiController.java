@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,9 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-/**
- * Created by wdy on 2/6/17.
- */
 @RestController
 @RequestMapping("/api")
 @WebAppConfiguration
@@ -33,7 +31,9 @@ public class UserRestApiController {
     private UserService userService;
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<UserModel>> listAllUsers() {
+
         List<UserModel> users = userService.findAllUsers();
         if (users.isEmpty()) {
             return new ResponseEntity(HttpStatus.NO_CONTENT);
@@ -41,11 +41,24 @@ public class UserRestApiController {
         return new ResponseEntity<List<UserModel>>(users, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/user/me", method = RequestMethod.POST)
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    public ResponseEntity<?> listUserProfile(@RequestBody UserModel userModel) {
+
+        List<UserModel> users = userService.listUserProfile(userModel.getUserName());
+        return new ResponseEntity<List<UserModel>>(users, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/user", method = RequestMethod.POST)
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> createUser(@RequestBody UserModel user) {
         logger.info("Creating User : {}", user);
+        if(userService.existsByUserName(user.getUserName())) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
         userService.saveUser(user);
         return new ResponseEntity<UserModel>(user, HttpStatus.OK);
     }
+
 
 }

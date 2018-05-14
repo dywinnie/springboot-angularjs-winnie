@@ -19,7 +19,7 @@
 
         vm.getAllRoles = getAllRoles;
 
-        $scope.roles=vm.getAllRoles;
+        $scope.roles = vm.getAllRoles;
 
         console.log("roles",$scope.roles);
         function getAllRoles (){

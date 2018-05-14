@@ -14,7 +14,7 @@
 <body>
 <div class="row">
     <div class="col-md-6">
-        <h2>Sample Page</h2>
+        <h2>Springboot JWT Angular Page</h2>
         <div class="panel panel-default" id="login">
             <div class="panel-body">
                 <form id="loginForm">
@@ -43,7 +43,7 @@
         <div id="userInfo">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Authenticated user</h3>
+                    <h3 class="panel-title">Login Successful!</h3>
                 </div>
                 <div class="panel-body">
                     <div id="userInfoBody"></div>
@@ -57,7 +57,8 @@
 
         <div id="pageBody">
             <ul class="menu-list">
-                <li class="grow"><a href="#/users">Users</a></li>
+                <li class="grow"><a href="#/users">View Summary</a></li>
+                <li class="grow"><a href="#/user/me">User Profile</a></li>
                 <li class="grow"><a href="#/roles">Roles</a></li>
             </ul>
         </div>
@@ -73,7 +74,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Login unsuccessful</h4>
+                <h4 class="modal-title">Error</h4>
             </div>
             <div class="modal-body"></div>
             <div class="modal-footer">
@@ -87,11 +88,13 @@
 <script src="/webjars/angularjs/1.4.9/angular-resource.js"></script>
 <script src="/webjars/angularjs/1.4.9/angular-route.js"></script>
 <script src="js/lib/ngStorage.min.js"></script>
+<script src="js/libs/jwt-decode.min.js"></script>
 <script src="/js/app.js"></script>
 <script src="/js/userController.js"></script>
 <script src="/js/roleController.js"></script>
 <script src="/js/userService.js"></script>
 <script src="/js/roleService.js"></script>
+<script src="/js/jwtService.js"></script>
 
 <script src="https://code.jquery.com/jquery-2.2.2.js" integrity="sha256-4/zUCqiq0kqxhZIyp4G0Gk+AOtCJsY1TA00k5ClsZYE="
         crossorigin="anonymous"></script>
@@ -99,10 +102,9 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
         integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
         crossorigin="anonymous"></script>
-<script src="js/libs/jwt-decode.min.js"></script>
 <script src="js/client.js"></script>
 
 <link rel="stylesheet" href="/webjars/bootstrap/3.3.6/css/bootstrap.css">
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.0-rc2/angular-material.min.css">
 </body>
 </html>

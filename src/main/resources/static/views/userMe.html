@@ -12,7 +12,7 @@
                 </tr>
                 </thead>
                 <tbody md-body>
-                <tr ng-repeat="user in ctrl.getAllUsers() | orderBy : ['userName']  track by $index">
+                <tr ng-repeat="user in ctrl.getCurrentUser() | orderBy : ['userName']  track by $index">
                     <td md-cell>{{user.userName}}</td>
                     <td md-cell>{{user.firstName}}</td>
                     <td md-cell>{{user.LastName}}</td>
@@ -20,9 +20,6 @@
                     <td md-cell>
                         <md-button class="buttonx btn btn-default" ng-click="editRow(user)">
                             <md-icon class="material-icons">edit</md-icon>
-                        </md-button>
-                        <md-button class="md-icon-button" ng-click="deleteRow(item.key)">
-                            <md-icon class="material-icons">delete</md-icon>
                         </md-button>
                     </td>
                 </tr>

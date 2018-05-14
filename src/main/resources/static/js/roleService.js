@@ -4,8 +4,8 @@
 'use strict';
 
 angular.module('app').factory('RoleService',
-    ['$localStorage', '$http', '$q', 'urls',
-        function ($localStorage, $http, $q, urls) {
+    ['$localStorage', '$http', '$q', 'urls', 'mainService',
+        function ($localStorage, $http, $q, urls, mainService) {
 
             var factory = {
                 loadAllRoles: loadAllRoles,
@@ -17,7 +17,9 @@ angular.module('app').factory('RoleService',
             function loadAllRoles() {
                 console.log('Fetching all roles');
                 var deferred = $q.defer();
-                $http.get(urls.ROLE_SERVICE_API)
+                $http.get(urls.ROLE_SERVICE_API, {
+                    headers: mainService.createAuthorizationTokenHeader()
+                })
                     .then(
                         function (response) {
                             console.log('Fetched successfully all roles');

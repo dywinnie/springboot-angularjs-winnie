@@ -2,6 +2,7 @@
 $(function () {
     // VARIABLES =============================================================
     var TOKEN_KEY = "jwtToken"
+    var USERNAME_KEY = "userName"
     var $notLoggedIn = $("#notLoggedIn");
     var $loggedIn = $("#loggedIn").hide();
     var $loggedInBody = $("#loggedInBody");
@@ -19,8 +20,12 @@ $(function () {
         localStorage.setItem(TOKEN_KEY, token);
     }
 
+    function setUserName(userName) {
+        localStorage.setItem(USERNAME_KEY, userName);
+    }
+
     function removeJwtToken() {
-        localStorage.removeItem(TOKEN_KEY);
+        localStorage.clear();
     }
 
     function doLogin(loginData) {
@@ -34,6 +39,7 @@ $(function () {
             success: function (data, textStatus, jqXHR) {
                 console.log(data);
                 setJwtToken(data.token);
+                setUserName(data.userName);
                 $login.hide();
                 $notLoggedIn.hide();
                 // showTokenInformation();
@@ -71,6 +77,8 @@ $(function () {
         $notLoggedIn.show();
         $("#createUserForm").hide();
         $pageBody.hide();
+        location.hash="";
+        location.reload();
     }
 
     function createAuthorizationTokenHeader() {

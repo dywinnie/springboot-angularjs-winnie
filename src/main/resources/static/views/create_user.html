@@ -6,18 +6,45 @@
 </head>
 <body ng-controller="UserController">
 <div id="createUserForm">
-    <form ng-submit="ctrl.submit()" ng-show="!isSaved">
+    <form ng-submit="ctrl.submit()" ng-show="!remove">
         <div class="form-group col-xs-6">
             <label>Name:</label>
             <input class="form-control" ng-model="user.userName" id="name">
+            <label>Password:</label>
+            <input type="password" class="form-control" ng-model="user.password" id="password">
+            <label>First Name:</label>
+            <input class="form-control" ng-model="user.firstName" id="firstName">
+            <label>Last Name:</label>
+            <input class="form-control" ng-model="user.lastName" id="lastName">
             <div style="margin-top: 10pt;">
                 <button type="submit" class="btn btn-default">Register</button>
             </div>
         </div>
     </form>
 
-    <div style="font-size: 20pt;" ng-show="isSaved">User Name "{{user.userName}}" has been created</div>
+    <div style="font-size: 20pt;" ng-show="remove">
+        User Name "{{user.userName}}" has been created
+        <br>
+        First Name "{{user.firstName}}"
+        <br>
+        Last Name "{{user.lastName}}"
+    </div>
 </div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="editModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Edit/Update</h4>
+            </div>
+            <div class="modal-body"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 <script src="https://code.jquery.com/jquery-2.2.2.js" integrity="sha256-4/zUCqiq0kqxhZIyp4G0Gk+AOtCJsY1TA00k5ClsZYE="
         crossorigin="anonymous"></script>
