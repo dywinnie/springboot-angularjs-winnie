@@ -18,8 +18,8 @@
                     <td md-cell>{{user.LastName}}</td>
                     <td md-cell>{{user.lastPasswordResetDate | date : "MM/dd/yyyy" : "UTC"}}</td>
                     <td md-cell>
-                        <md-button class="buttonx btn btn-default" ng-click="editRow(user)">
-                            <md-icon class="material-icons">edit</md-icon>
+                        <md-button class="buttonx btn btn-default" ng-click="ctrl.deleteSelf()">
+                            <md-icon class="material-icons">Delete</md-icon>
                         </md-button>
                     </td>
                 </tr>

@@ -1,4 +1,4 @@
-<div class="section">
+<div class="section" id="userList">
     <h3>{{headingTitle}}</h3>
     <div>
             <table class="table table-bordered table-striped">
@@ -7,6 +7,7 @@
                     <th md-column md-numeric>User Name</th>
                     <th md-column md-numeric>First Name</th>
                     <th md-column md-numeric>Last Name</th>
+                    <th md-column md-numeric>Role</th>
                     <th md-column md-numeric>Last Modified Date</th>
                     <th md-column md-numeric></th>
                 </tr>
@@ -15,13 +16,14 @@
                 <tr ng-repeat="user in ctrl.getAllUsers() | orderBy : ['userName']  track by $index">
                     <td md-cell>{{user.userName}}</td>
                     <td md-cell>{{user.firstName}}</td>
-                    <td md-cell>{{user.LastName}}</td>
+                    <td md-cell>{{user.lastName}}</td>
+                    <td md-cell>{{user.authority}}</td>
                     <td md-cell>{{user.lastPasswordResetDate | date : "MM/dd/yyyy" : "UTC"}}</td>
                     <td md-cell>
-                        <md-button class="buttonx btn btn-default" ng-click="editRow(user)">
+                        <md-button class="buttonx btn btn-default" ng-click="ctrl.editRow(user)">
                             <md-icon class="material-icons">edit</md-icon>
                         </md-button>
-                        <md-button class="md-icon-button" ng-click="deleteRow(item.key)">
+                        <md-button class="buttonx btn btn-default" ng-click="ctrl.showDeleteModal(user.userName)">
                             <md-icon class="material-icons">delete</md-icon>
                         </md-button>
                     </td>
@@ -30,3 +32,45 @@
             </table>
     </div>
 </div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="editModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">{{headingTitleModal}} User</h4>
+            </div>
+            <div class="modal-body">
+                <div id="editUserForm" ng-show="headingTitleModal == 'Update'">
+                    <form ng-submit="ctrl.save()">
+                        <div class="form-group col-xs-6">
+                            <label>User Name:</label>
+                                <input class="form-control" ng-model="userEdit.userName" id="editUserName" readonly>
+                            <label>First Name:</label>
+                                <input class="form-control" ng-model="userEdit.firstName" id="editFirstName" readonly>
+                            <label>Last Name:</label>
+                                <input class="form-control" ng-model="userEdit.lastName" id="editLastName" readonly>
+                            <label>Role:</label>
+                                <select class="form-control" ng-model="userEdit.authority_id" required>
+                                    <option ng-selected="userEdit.authority=='ROLE_ADMIN'" value="1">ROLE_ADMIN</option>
+                                    <option ng-selected="userEdit.authority=='ROLE_USER'" value="2">ROLE_USER</option>
+                                </select>
+                            <div style="margin-top: 10pt;" ng-show="headingTitleModal == 'Update'">
+                                <button type="submit" class="btn btn-default">Save</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div ng-show="headingTitleModal != 'Update'">
+                    Are you sure you want to delete user? {{userEdit.userName}}
+                </div>
+                <div class="modal-footer" style="border-top:none;">
+                    <div ng-show="headingTitleModal == 'Delete'">
+                        <button type="button" class="btn btn-default" ng-click="ctrl.deleteRow()">Delete</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -32,8 +33,29 @@ public class UserServiceImpl implements UserService {
     PasswordEncoder passwordEncoder;
 
     @Override
-    public List<UserModel> findAllUsers() {
-        return userRepository.findAll();
+    public List<HashMap<String, Object>> findAllUsers() {
+
+        List<UserModel> users = userRepository.findAll();
+
+        List<HashMap<String, Object>> usersMap = new ArrayList<HashMap<String, Object>>();
+        for (UserModel user : users) {
+            HashMap<String, Object> entity = new HashMap<String, Object>();
+            entity.put("id", user.getId());
+            entity.put("userName", user.getUserName());
+            entity.put("firstName", user.getFirstName());
+            entity.put("lastName", user.getLastName());
+            entity.put("authority_id", user.getAuthorities().get(0).getId());
+            entity.put("authority", user.getAuthorities().get(0).getName());
+            entity.put("lastPasswordResetDate", user.getLastPasswordResetDate());
+            usersMap.add(entity);
+        }
+        return usersMap;
+    }
+
+    @Override
+    public void removeUser(UserModel user) {
+        UserModel userModel = userRepository.findByUserName(user.getUserName());
+        userRepository.delete(userModel);
     }
 
     @Override
@@ -55,6 +77,23 @@ public class UserServiceImpl implements UserService {
         user.setLastPasswordResetDate(new Date());
         user.setEnabled(true);
         userRepository.save(user);
+    }
+
+    @Override
+    public UserModel saveUser(UserModel user, Long authorityId) {
+
+        UserModel oldUser = userRepository.findByUserName(user.getUserName());
+        user.setId(oldUser.getId());
+        user.setPassword(oldUser.getPassword());
+        user.setEnabled(oldUser.getEnabled());
+
+        AuthorityModel authority = authorityRepository.findOne(authorityId);
+        List<AuthorityModel> authorities = new ArrayList<>();
+        authorities.add(authority);
+        user.setAuthorities(authorities);
+        userRepository.save(user);
+
+        return userRepository.findByUserName(user.getUserName());
     }
 
     @Override

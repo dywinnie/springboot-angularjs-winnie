@@ -45,6 +45,8 @@ app.constant('urls', {
     USER_SERVICE_API : 'http://localhost:8080/api/users',
     CURRENT_USER_SERVICE_API : 'http://localhost:8080/api/user/me',
     CREATE_USER_SERVICE_API : 'http://localhost:8080/api/user',
+    EDIT_USER_SERVICE_API : 'http://localhost:8080/api/user/update/',
+    DELETE_USER_SERVICE_API : 'http://localhost:8080/api/user/delete',
     ROLE_SERVICE_API : ' http://localhost:8080/api/roles',
     TOKEN_KEY : 'jwtToken',
     USERNAME_KEY : 'userName'
@@ -72,6 +74,10 @@ app.factory('mainService', function(urls) {
         localStorage.removeItem(urls.TOKEN_KEY);
     }
 
+    function removeCurrentUser() {
+        localStorage.removeItem(urls.USERNAME_KEY);
+    }
+
     function createAuthorizationTokenHeader() {
         var token = getJwtToken();
         if (token) {
@@ -81,12 +87,22 @@ app.factory('mainService', function(urls) {
         }
     }
 
+    function removeStorage(){
+        localStorage.clear();
+        removeJwtToken();
+        removeCurrentUser();
+        location.hash="";
+        location.reload();
+    }
+
     return {
         getJwtToken: getJwtToken,
         setJwtToken: setJwtToken,
         getUserName: getUserName,
         setUserName: setUserName,
         removeJwtToken: removeJwtToken,
+        removeCurrentUser: removeCurrentUser,
+        removeStorage: removeStorage,
         createAuthorizationTokenHeader: createAuthorizationTokenHeader
     };
 });

@@ -2,16 +2,18 @@ package com.assignment.service;
 
 import com.assignment.domain.model.UserModel;
 
+import java.util.HashMap;
 import java.util.List;
 
-/**
- * Created by wdy on 2/6/17.
- */
 public interface UserService {
 
-    List<UserModel> findAllUsers();
+    List<HashMap<String, Object>> findAllUsers();
 
     void saveUser(UserModel user);
+
+    UserModel saveUser(UserModel user, Long authorityID);
+
+    void removeUser(UserModel user);
 
     Boolean existsByUserName(String userName);
 

@@ -11,11 +11,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -32,13 +34,13 @@ public class UserRestApiController {
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<UserModel>> listAllUsers() {
+    public ResponseEntity<?> listAllUsers() {
 
-        List<UserModel> users = userService.findAllUsers();
-        if (users.isEmpty()) {
+        List<HashMap<String, Object>> usersMap = userService.findAllUsers();
+        if (usersMap.isEmpty()) {
             return new ResponseEntity(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<List<UserModel>>(users, HttpStatus.OK);
+        return new ResponseEntity<List<HashMap<String, Object>>>(usersMap, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/user/me", method = RequestMethod.POST)
@@ -60,5 +62,25 @@ public class UserRestApiController {
         return new ResponseEntity<UserModel>(user, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/user/delete", method = RequestMethod.POST)
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    public ResponseEntity<?> deleteUser(@RequestBody UserModel user) {
+        logger.info("Deleting User : {}", user);
+        if(!userService.existsByUserName(user.getUserName())) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        userService.removeUser(user);
+        return new ResponseEntity(HttpStatus.OK);
+    }
 
+    @RequestMapping(value = "/user/update/{authority_id}", method = RequestMethod.POST)
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> updateUser(@RequestBody UserModel user, @PathVariable("authority_id") final Long authorityId) {
+        logger.info("Updating User : {}", user, "authority_id: ", authorityId);
+        if(!userService.existsByUserName(user.getUserName())) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        UserModel userEntity = userService.saveUser(user, authorityId);
+        return new ResponseEntity<UserModel>(userEntity, HttpStatus.OK);
+    }
 }

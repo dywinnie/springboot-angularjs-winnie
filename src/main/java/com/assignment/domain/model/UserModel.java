@@ -13,9 +13,6 @@ import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by w on 2/6/17.
- */
 @Entity
 @Table(name = "user")
 public class UserModel extends BaseModel {
