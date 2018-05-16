@@ -143,6 +143,6 @@ This demo is build with with Maven 3 and Java 1.8.
         ```
   3. Make sure of the following when using docker:
         
-        -mysql container is running on port 3306: docker start mysql-dbtest
-        -container springboot-angularjs-winnie exists, image java and mysql exists
-        -mysql-dbtest is linked to springboot-angularjs-winnie
+        -   mysql container is running on port 3306: docker start mysql-dbtest
+        -   container springboot-angularjs-winnie exists, image java and mysql exists
+        -   mysql-dbtest is linked to springboot-angularjs-winnie
