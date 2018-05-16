@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  mysql-dbtest:
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=dbtest
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=root
+  springboot-angularjs-winnie:
+    image: springboot-angularjs-winnie
+    depends_on:
+      - mysql-dbtest
+    ports:
+      - 8080:8080
+    environment:
+      - DATABASE_HOST=3306
+      - DATABASE_USER=root
+      - DATABASE_PASSWORD=root
+      - DATABASE_NAME=dbtest
+      - DATABASE_PORT=3306
