@@ -2,11 +2,11 @@ package com.assignment.configuration;
 
 import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 
 import javax.sql.DataSource;
 
@@ -15,6 +15,7 @@ import javax.sql.DataSource;
  */
 @Configuration
 @ComponentScan
+@EnableAutoConfiguration
 public class DatabaseConfiguration {
     @Autowired
     private DataSourceProperties properties;

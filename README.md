@@ -21,21 +21,7 @@ This demo is build with with Maven 3 and Java 1.8.
 	cd springboot-angularjs-winnie
 	```
 
-2. **Create MySQL database**
-
-	```bash
-	create dbtest
-    username root
-    password root
-	```
-
-3. **Change MySQL username and password as per your MySQL installation**
-
-	+ open `src/main/resources/application.properties` file.
-
-	+ notice `spring.datasource.username` and `spring.datasource.password` properties as per your mysql installation
-
-4. **Run the app**
+2. **Run the app**
 
 	You can run the spring boot app by typing the following command -
 
@@ -49,19 +35,28 @@ This demo is build with with Maven 3 and Java 1.8.
 
     Login users:
     Admin - admin:admin
-    
-    Endpoints:
-    http://localhost:8080/auth
-    http://localhost:8080/api/user
-    http://localhost:8080/api/user/me
-    http://localhost:8080/api/users
-    http://localhost:8080/api/user/update/{authority_id}
-    http://localhost:8080/api/user/delete
-    http://localhost:8080/api/roles (optional)    
-    
 
-5. **Run an insert in SQL**
-	
+  **Running the app will do the following**
+
+1.  **Create MySQL database**
+
+	```bash
+	create dbtest
+    username root
+    password root
+	```
+
+2. **Change MySQL username and password as per your MySQL installation**
+
+	+ open `src/main/resources/application.properties` file.
+
+	+ notice `spring.datasource.username` and `spring.datasource.password` properties as per your mysql installation
+
+3. **Run an insert in SQL**
+
+   For database creation:
+        Run dbtest.sql script from the springboot-angularjs-winnie/src/resources directory
+
 	Highlight: The spring boot app uses role based authorization powered by spring security. Please execute the following sql queries in the database to insert the `USER` and `ADMIN` roles.
 
 	```sql
@@ -75,36 +70,79 @@ This demo is build with with Maven 3 and Java 1.8.
 
 	Any new user who signs up to the app is assigned the `ROLE_USER` by default.
 
-    For database creation:
-        Run dbtest.sql script from the springboot-angularjs-winnie/src/resources directory
-
-
-## Docker (Challenges)
-
-  **Encountered challenges**
-1. You should have an existing container of mysql and springboot-angularjs-winnie with the database script ready before the docker-compose up runs. Otherwise you may encounter a Communication link failure or that 3306 port is already in use.
-2. Two ways to run the docker but both had challenges of connection issue.
-
-**Option 1**
-    	
-    docker run --name=mysql-dbtest -p 3306:3306 -e "MYSQL_ROOT_PASSWORD=root" -e "MYSQL_PASSWORD=root" -e "MYSQL_DATABASE=dbtest" mysql
-    docker build -t springboot-angularjs-winnie . -f ./src/main/docker/Dockerfile
-    docker run -it --link springboot-angularjs-winnie_mysql-dbtest_1:mysql --rm mysql sh -c 'exec mysql -h"$MYSQL_PORT_3306_TCP_ADDR" -P"$MYSQL_PORT_3306_TCP_PORT" -uroot -p"$MYSQL_ENV_MYSQL_ROOT_PASSWORD"'
-	
-
-   **To enter mysql docker**
+ 
    
-    docker run -it --link springboot-angularjs-winnie_mysql-dbtest_1:mysql --rm mysql sh -c 'exec mysql -h"$MYSQL_PORT_3306_TCP_ADDR" -P"$MYSQL_PORT_3306_TCP_PORT" -uroot -p"$MYSQL_ENV_MYSQL_ROOT_PASSWORD"'
-	
+## API Endpoints 
     
-   **Option 2**
+    
+    http://localhost:8080/auth
+    http://localhost:8080/api/user    
+    http://localhost:8080/api/user/me    
+    http://localhost:8080/api/users    
+    http://localhost:8080/api/user/update/{authority_id}    
+    http://localhost:8080/api/user/delete    
+    http://localhost:8080/api/roles (optional)    
+    
+
+## Docker
+
+   **Option 1**
 	
+	```bash
 	git clone https://github.com/dywinnie/springboot-angularjs-winnie.git
 	cd springboot-angularjs-winnie
-
+    mvn clean package docker:build
+    docker build -t springboot-angularjs-winnie . -f ./src/main/docker/Dockerfile
 	docker-compose up
+    ```
     
-    
-    
+   **Option 3**
+       	
+    ```bash
+    docker run --name=mysql-dbtest -p 3306:3306 -e "MYSQL_ROOT_PASSWORD=root" -e "MYSQL_PASSWORD=root" -e "MYSQL_DATABASE=dbtest" mysql
+    docker build -t springboot-angularjs-winnie . -f ./src/main/docker/Dockerfile
+    docker run -p 8080:8080 springboot-angularjs-winnie -it --link springboot-angularjs-winnie:mysql --rm mysql sh -c 'exec mysql -h"8080" -P"8080" -u"root" -p"root"'
+   	```
+ 
+   **To enter mysql docker**
+   
+    ```bash
+    docker run -it --link springboot-angularjs-winnie_mysql-dbtest_1:mysql --rm mysql sh -c 'exec mysql -h"$MYSQL_PORT_3306_TCP_ADDR" -P"$MYSQL_PORT_3306_TCP_PORT" -uroot -p"$MYSQL_ENV_MYSQL_ROOT_PASSWORD"'
+    ```
+
+##  Encountered challenges
+  
+  1. Issues in no particular order:
+  
+        -ERROR: pull access denied for springboot-angularjs-winnie, repository does not exist or may require 'docker login'
+
+        -ADD failed: stat /var/lib/docker/tmp/docker-builder681126597/target/springboot-angularjs-winnie.jar: no such file or directory
         
-     
+        -Error response from daemon: driver failed programming external connectivity on endpoint mysql-dbtest (cf44f5932edc08bc322d009cb9897c27e39838fa9b29f7ca3decc5d5b170e9cd): Error starting userland proxy: listen tcp 0.0.0.0:3306: bind: address already in use.
+
+        -Could not get JDBC Connection; nested exception is org.apache.tomcat.dbcp.dbcp.SQLNestedException: Cannot create PoolableConnectionFactory (Communications link failure
+        
+        -3306 connection is already used.
+
+  2. In either cases:
+        
+        -   **The following commands might be helpful**
+            
+             ```bash
+             mvn clean package docker:build
+ 
+             or
+         
+             docker build -t springboot-angularjs-winnie . -f ./src/main/docker/Dockerfile
+             ```
+            
+        -   **You can always run the app**
+        
+        ```bash
+        	mvn spring-boot:run
+        ```
+  3. Make sure of the following when using docker:
+        
+        -mysql container is running on port 3306: docker start mysql-dbtest
+        -container springboot-angularjs-winnie exists, image java and mysql exists
+        -mysql-dbtest is linked to springboot-angularjs-winnie
