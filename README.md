@@ -2,12 +2,11 @@
 
 
 ## About
-<ul>The ability to create, read, update and delete (CRUD) users</ul>
-<ul>The admin user is able to assign 2 types of permissions to every user: 'ADMIN' or 'USER'
-<li>ADMIN: Allowed to create, read, update and delete users</li>
-<li>USER: Allowed to only read and delete their own profile, they should NOT be able to perform
-any other action</li>
-</ul>
+-   <ul>The ability to create, read, update and delete (CRUD) users</ul>
+-   <ul>The admin user is able to assign 2 types of permissions to every user: 'ADMIN' or 'USER'
+        <li>ADMIN: Allowed to create, read, update and delete users</li>
+        <li>USER: Allowed to only read and delete their own profile, they should NOT be able to perform any other action</li>
+    </ul>
 
 ## Requirements
 This demo is build with with Maven 3 and Java 1.8.
@@ -88,27 +87,27 @@ This demo is build with with Maven 3 and Java 1.8.
 
    **Option 1**
 	
-	```bash
-	git clone https://github.com/dywinnie/springboot-angularjs-winnie.git
-	cd springboot-angularjs-winnie
+   ```bash
+    git clone https://github.com/dywinnie/springboot-angularjs-winnie.git
+    cd springboot-angularjs-winnie
     mvn clean package docker:build
     docker build -t springboot-angularjs-winnie . -f ./src/main/docker/Dockerfile
-	docker-compose up
-    ```
+    docker-compose up
+   ```
     
    **Option 3**
        	
-    ```bash
+   ```bash
     docker run --name=mysql-dbtest -p 3306:3306 -e "MYSQL_ROOT_PASSWORD=root" -e "MYSQL_PASSWORD=root" -e "MYSQL_DATABASE=dbtest" mysql
     docker build -t springboot-angularjs-winnie . -f ./src/main/docker/Dockerfile
     docker run -p 8080:8080 springboot-angularjs-winnie -it --link springboot-angularjs-winnie:mysql --rm mysql sh -c 'exec mysql -h"8080" -P"8080" -u"root" -p"root"'
-   	```
+   ```
  
    **To enter mysql docker**
    
-    ```bash
+   ```bash
     docker run -it --link springboot-angularjs-winnie_mysql-dbtest_1:mysql --rm mysql sh -c 'exec mysql -h"$MYSQL_PORT_3306_TCP_ADDR" -P"$MYSQL_PORT_3306_TCP_PORT" -uroot -p"$MYSQL_ENV_MYSQL_ROOT_PASSWORD"'
-    ```
+   ```
 
 ##  Encountered challenges
   
