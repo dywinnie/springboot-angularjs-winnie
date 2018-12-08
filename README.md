@@ -44,6 +44,7 @@ This demo is build with with Maven 3 and Java 1.8.
     username root
     password root
 	```
+Note: For MySQL with default authentication plugin set to caching_sha2_password, must execute: ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root'; 
 
 2. **Change MySQL username and password as per your MySQL installation**
 
